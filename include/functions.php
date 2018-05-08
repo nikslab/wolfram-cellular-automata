@@ -8,17 +8,23 @@ function cellNext($rule, $input) {
         // input to decimal
         $a = bindec($input); // a number 0-7
         // rule to binary
-        $rule_bin = decbin($rule); // 8 bits
+        $rule_bin = decbin($rule);
+        // left pad to 8 bits and reverse
+        $rule_bin = strrev(str_pad($rule_bin, 8, "0", STR_PAD_LEFT));
         // output will be the $a-th bit of $rule_bin
         $output = substr($rule_bin, $a, 1);
+        //print "$input=>$a=>$rule_bin=>$output/";
     }
+    if ($output === false) { print "Error! $rule|$input|$a|$rule_bin\n"; }
     return $output;   
 }
 
 function nextGen($array, $rule) {
     $result = '';
-    for ($i=0; $i <= (strlen($array)-3); $i++) {
-        $result .= cellNext($rule, substr($array, $i, 3));
+    $edge = substr($array, -1) . substr($array, 0, 2);
+    $result .= cellNext($rule, $edge);
+    for ($i=1; $i <= (strlen($array)-3); $i++) {
+        $result .= cellNext($rule, substr($array, $i-1, 3));
     }
     // handle the edge
     $edge = substr($array, -2) . substr($array, 0, 1);
@@ -28,7 +34,7 @@ function nextGen($array, $rule) {
     return $result;
 }
 
-function printState($array, $chars=[' ', 'x']) {
+function printState($array, $chars=[' ', 'X']) {
     $zero = $chars[0];
     $one = $chars[1];
     $result = "";
@@ -47,4 +53,24 @@ function randomInitial($len) {
         $array .= $die;
     }
     return $array;
+}
+
+function detectCycle($history) {
+    $result = 0;
+    $last = count($history)-1;
+    $search = $history[$last];
+    $i = 0;
+    $stop = false;
+    while (!$stop) {
+        if ($search === $history[$i]) {
+            $stop = true;
+            $result = true;
+        } else {
+            $i++;
+            if ($i >= count($history)-1) {
+                $stop = true;
+            }
+        }
+    }
+    return ($last-$i);
 }

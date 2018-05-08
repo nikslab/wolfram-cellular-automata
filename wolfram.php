@@ -22,20 +22,29 @@ for ($i=0; $i<40; $i++) {
 
 $stop = false;
 $g = 0;
+$cycle = 0;
+$history = [];
 while (!$stop) {
     $last = $array;
     $line = printState($array);
+    $history[] = $line;
     print "$line\n";
     $array = nextGen($array, $rule);
     $g++;
-    if (($g >= $gens) || ($last == $array)) {
+    $cycle = detectCycle($history);
+    if (($g >= $gens) || ($last == $array) || ($cycle > 1)) {
         $stop = true;
     }
 }
 
 if ($g < $gens) {
     $g--;
-    print "Stuck after $g iterations, no point in going forward\n";
+    if ($cycle) {
+        print "Cycle of length $cycle detected, stopping\n";
+    } else {
+        print "Stuck in attractor after $g iterations, no point in going forward\n";
+    }
 } else {
     print "Reached max $g iterations\n";
 }
+
