@@ -47,10 +47,15 @@ function printState($array, $chars=[' ', 'X']) {
 }
 
 function randomInitial($len) {
+    $prob = rand(0, 100);
     $array = '';
     for ($i=1; $i<=$len; $i++) {
-        $die = rand(0, 1);
-        $array .= $die;
+        $die = rand(0, 100);
+        $r = '0';
+        if ($die < $prob) {
+            $r = '1';
+        }
+        $array .= $r;
     }
     return $array;
 }
