@@ -11,14 +11,7 @@ if (isset($argv[2])) {
 }
 
 // Initial
-$array = '';
-for ($i=0; $i<20; $i++) {
-    $array .= '0';
-}
-$array .= '1';
-for ($i=0; $i<20; $i++) {
-    $array .= '0';
-}
+$array = randomInitial(100);
 
 $stop = false;
 $g = 0;

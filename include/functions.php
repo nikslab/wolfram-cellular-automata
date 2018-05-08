@@ -21,10 +21,10 @@ function nextGen($array, $rule) {
         $result .= cellNext($rule, substr($array, $i, 3));
     }
     // handle the edge
-    $edge = substr($array, strlen($array)-2, 2) . substr($array, 0, 1);
-    $result .= cellNext($rule, substr($array, $i, 3));
-    $edge = substr($array, strlen($array)-1, 1) . substr($array, 0, 2);
-    $result .= cellNext($rule, substr($array, $i, 3));
+    $edge = substr($array, -2) . substr($array, 0, 1);
+    $result .= cellNext($rule, $edge);
+    $edge = substr($array, -1) . substr($array, 0, 2);
+    $result .= cellNext($rule, $edge);
     return $result;
 }
 
@@ -40,3 +40,11 @@ function printState($array, $chars=[' ', 'x']) {
     return $result;
 }
 
+function randomInitial($len) {
+    $array = '';
+    for ($i=1; $i<=$len; $i++) {
+        $die = rand(0, 1);
+        $array .= $die;
+    }
+    return $array;
+}
