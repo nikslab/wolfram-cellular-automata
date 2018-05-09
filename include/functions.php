@@ -34,7 +34,7 @@ function nextGen($array, $rule) {
     return $result;
 }
 
-function printState($array, $chars=[' ', 'X']) {
+function printState($array, $chars=['.', 'X']) {
     $zero = $chars[0];
     $one = $chars[1];
     $result = "";
